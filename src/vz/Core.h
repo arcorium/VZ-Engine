@@ -19,7 +19,7 @@
 		#endif
 	#endif
 
-#elif defined VZ_PLATFROM_UNIX
+#elif defined VZ_PLATFORM_UNIX
 	#define VZ_API
 #else
 	#error set define to VZ_PLATFORM_[WIN|UNIX]

@@ -1,5 +1,5 @@
-#include "vz\vz.h"
-#include "vz\Window.h"
+#include "vz/vz.h"
+#include "vz/Window.h"
 
 class App : public vz::Application
 {

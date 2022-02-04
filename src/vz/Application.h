@@ -1,5 +1,6 @@
 #pragma once
 #include "Core.h"
+#include "Window.h"
 
 namespace vz
 {
@@ -11,6 +12,9 @@ namespace vz
 		virtual ~Application();
 
 		void Start();
+
+	private:
+		Window* m_window;
 	};
 
 	Application* CreateApp();

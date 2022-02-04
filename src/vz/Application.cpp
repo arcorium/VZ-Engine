@@ -5,14 +5,19 @@ namespace vz
 {
 	Application::Application()
 	{
+		m_window = Window::Create();
 	}
 
 	Application::~Application()
 	{
+		delete m_window;
 	}
 
 	void Application::Start()
 	{
-		while (true);
+		while (true)
+		{
+			m_window->OnUpdate();
+		}
 	}
 }

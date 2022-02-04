@@ -12,6 +12,8 @@
 #include <unordered_map>
 #include <unordered_set>
 
+#include "vz/Log.h"
+
 // Platform specific
 
 #if defined VZ_PLATFORM_WIN

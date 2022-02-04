@@ -19,8 +19,10 @@ namespace vz
 		unsigned GetHeight() const override { return m_data.Height; }
 
 		void SetEventCallback(const EventCallbackFn& callback) override { m_data.Callback = callback; }
-		bool SetVSync(bool val) override;
+		void SetVSync(bool val) override;
 		bool IsVSync() const override;
+
+		static Window* Create(const WindowProp& props = WindowProp());
 
 	private:
 		virtual void Init(const WindowProp& prop);

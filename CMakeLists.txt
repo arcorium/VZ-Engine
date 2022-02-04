@@ -20,6 +20,8 @@ endif()
 option(VZ_USE_PRECOMPILED_HEADER "Use precompiled header" ON)
 
 option(VZ_SAMPLE "Build Sample" ON)
+
+option(VZ_USE_ASSERT "Use assert to checking" ON)
 # =======================================================================================================
 
 # File Headers
@@ -55,8 +57,7 @@ add_library(VZ-Engine
     ${VZ_LIBRARY_BUILD}
     ${VZ_HEADERS}
     ${VZ_SOURCES}
- "src/vz/platform/Windows/WindowsWindow.h"
- "src/vz/platform/Windows/WindowsWindow.cpp")
+    "src/vz/Window.cpp")
 
 # Set properties for the library
 set_target_properties(VZ-Engine
@@ -82,7 +83,14 @@ target_include_directories(
 list(APPEND
     VZ_DEFINES_PRIVATE
     VZ_BUILD
+)
+
+#if (VZ_USE_ASSERT)
+    list(APPEND
+        VZ_DEFINES_PUBLIC
+        VZ_ASSERT_ENABLED
     )
+#endif()
 
 # Platform
 if (WIN32 AND MSVC)

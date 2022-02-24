@@ -10,7 +10,7 @@ namespace vz
 
 	public:
 		MouseMoveEvent(float x, float y)
-			: m_x(x), m_y( y) {}
+			: m_x(x), m_y(y) {}
 
 #ifdef VZ_DEBUG
 		std::string ToString() const override
@@ -20,11 +20,55 @@ namespace vz
 			return ss.str();
 		}
 #endif
+
+		float GetX() const
+		{
+			return m_x;
+		}
+
+		float GetY() const
+		{
+			return m_y;
+		}
+
 		EVENT_CLASS_CATEGORY(EventCategoryInput | EventCategoryMouse)
 		EVENT_CLASS_TYPE(MouseMoved)
 
 	private:
 		float m_x, m_y;
+	};
+
+	class MouseScrollEvent : public Event
+	{
+	public:
+		MouseScrollEvent(float xOffset, float yOffset)
+		: m_xOffset(xOffset), m_yOffset(yOffset) {}
+
+#ifdef VZ_DEBUG
+		std::string ToString() const override
+		{
+			std::stringstream ss;
+			ss << "MouseScrollEvent : " << "(" << m_xOffset << ", " << m_yOffset << ")";
+			return ss.str();
+		}
+#endif
+
+		float GetX() const
+		{
+			return m_xOffset;
+		}
+
+		float GetY() const
+		{
+			return m_yOffset;
+		}
+
+		EVENT_CLASS_TYPE(MouseScrolled)
+		EVENT_CLASS_CATEGORY(EventCategoryInput | EventCategoryMouse)
+
+
+	private:
+		float m_xOffset, m_yOffset;
 	};
 
 	// Superclass of mouse button event
@@ -47,8 +91,8 @@ namespace vz
 	class MouseButtonPressEvent : public MouseButtonEvent
 	{
 	public:
-		MouseButtonPressEvent(int button)
-			: MouseButtonEvent(button) {}
+		MouseButtonPressEvent(int button, int mods)
+			: MouseButtonEvent(button), m_modifier(mods) {}
 
 #ifdef VZ_DEBUG
 		std::string ToString() const override
@@ -59,7 +103,12 @@ namespace vz
 		}
 #endif
 
+		int GetModifier() const { return m_modifier; }
+
 		EVENT_CLASS_TYPE(MouseButtonPressed)
+
+	private:
+		int m_modifier;
 	};
 
 	// Mouse button release handle
@@ -73,7 +122,7 @@ namespace vz
 		std::string ToString() const override
 		{
 			std::stringstream ss;
-			ss << "MouseButtonPressEvent : " << m_button;
+			ss << "MouseButtonReleaseEvent : " << m_button;
 			return ss.str();
 		}
 #endif

@@ -12,19 +12,19 @@ namespace vz
 	{
 	public:
 		WindowResizeEvent(unsigned x, unsigned y)
-			: m_x(x), m_y(y) {}
+			: Event(), m_x(x), m_y(y) {}
 
 		/**
 		 * \brief Get window width after resized
 		 * \return width window
 		 */
-		unsigned GetWidth() { return m_x; }
+		int GetWidth() { return m_x; }
 
 		/**
 		 * \brief Get window height after resized
 		 * \return height window
 		 */
-		unsigned GetHeight() { return m_y; }
+		int GetHeight() { return m_y; }
 
 #ifdef VZ_DEBUG
 		std::string ToString() const override
@@ -40,7 +40,7 @@ namespace vz
 
 	private:
 		// Width and Height
-		unsigned m_x, m_y;
+		int m_x, m_y;
 	};
 
 	/**
@@ -51,8 +51,8 @@ namespace vz
 	public:
 		WindowCloseEvent() {}
 
-		EVENT_CLASS_CATEGORY(EventCategoryApplication)
 		EVENT_CLASS_TYPE(WindowClose)
+		EVENT_CLASS_CATEGORY(EventCategoryApplication)
 
 	};
 

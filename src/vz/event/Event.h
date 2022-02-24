@@ -1,6 +1,5 @@
 #pragma once
 #include "vzpch.h"
-
 #include "vz/Core.h"
 
 namespace vz
@@ -17,7 +16,7 @@ namespace vz
 		// Application
 		AppTick, AppUpdate, AppRender,
 		// Key
-		KeyPressed, KeyReleased,
+		KeyPressed, KeyTyped, KeyReleased,
 		// Mouse
 		MouseButtonPressed, MouseButtonReleased, MouseMoved, MouseScrolled
 	};
@@ -85,10 +84,13 @@ namespace vz
 			return GetCategoryFlags() & category;
 		}
 
-
+		bool IsHandled() const
+		{
+			return m_handled;
+		}
 	protected:
 
-		bool m_handled = false;		// To make know if the event occurred is already handled by system like button or not.
+		bool m_handled = false;		// To make know if the event occurred is already handled by system or not.
 	};
 
 	// Dispatching event base on their type and category
@@ -109,7 +111,7 @@ namespace vz
 		 * \return true if event is successfully dispatched and false otherwise
 		 */
 		template <typename T>
-		bool Dispatch(EventFn<T> fn)
+		bool Dispatch(const EventFn<T>& fn)
 		{
 			if (m_event.GetEventType() == T::GetStaticType())
 			{

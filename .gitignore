@@ -2,6 +2,7 @@
 # Directories
 .vs/
 out/
+bin/
 
 # Files
 

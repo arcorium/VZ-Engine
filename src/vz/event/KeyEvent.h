@@ -6,7 +6,7 @@ namespace vz
 	/**
 	 * \brief Keyboard Event super class
 	 */
-	class VZ_API KeyEvent : Event
+	class VZ_API KeyEvent : public Event
 	{
 
 	public:
@@ -15,6 +15,7 @@ namespace vz
 		 * \return keycode
 		 */
 		int GetKeyCode() const { return m_keyCode; }
+
 
 		EVENT_CLASS_CATEGORY(EventCategory::EventCategoryInput | EventCategory::EventCategoryKeyboard)
 	protected:
@@ -26,6 +27,7 @@ namespace vz
 
 		// keyboard keycode
 		int m_keyCode;
+
 	};
 
 	/**
@@ -39,14 +41,15 @@ namespace vz
 		 * \param keycode 
 		 * \param repeatCount 
 		 */
-		KeyPressEvent(int keycode, int repeatCount)
-			: KeyEvent(keycode), m_repeatCount(repeatCount) {}
+		KeyPressEvent(int keycode, int mods,int repeatCount)
+			: KeyEvent(keycode), m_repeatCount(repeatCount), m_modifier(mods) {}
 
 		/**
 		 * \brief Get Total Repeated key count
 		 * \return total repeated key count
 		 */
 		int GetRepeatCount() const { return m_repeatCount; }
+		int GetModifier() const { return m_modifier; }
 
 		#ifdef VZ_DEBUG
 		std::string ToString() const override
@@ -63,6 +66,35 @@ namespace vz
 	private:
 		// total key repeat
 		int m_repeatCount;
+		// Keyboard modifier
+		int m_modifier;
+	};
+
+	/**
+ * \brief Keyboard Event Press handle
+ */
+	class VZ_API KeyTypeEvent : public KeyEvent
+	{
+	public:
+		/**
+		 * \brief Constructing by defining keycode and repeatcount
+		 * \param keycode
+		 * \param repeatCount
+		 */
+		KeyTypeEvent(int keycode)
+			: KeyEvent(keycode) {}
+
+#ifdef VZ_DEBUG
+		std::string ToString() const override
+		{
+
+			std::stringstream ss;
+			ss << "KeyPressedEvent: " << m_keyCode;
+			return ss.str();
+		}
+#endif
+
+		EVENT_CLASS_TYPE(KeyTyped)
 	};
 
 	/**

@@ -1,7 +1,6 @@
 #pragma once
 
-extern vz::Application* vz::CreateApp();	// The declaration is somewhere (client) not here (server)
-
+#ifdef VZ_PLATFORM_WIN
 int main()
 {
 	vz::Log::Init();
@@ -14,3 +13,4 @@ int main()
 	delete app;
 	return 0;
 }
+#endif

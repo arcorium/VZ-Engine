@@ -4,6 +4,7 @@
 
 namespace vz
 {
+	// static member declaration goes here (in header file is just like prototype, except the static member is also declared in there)
 	std::shared_ptr<spdlog::logger> Log::m_coreLogger;
 	std::shared_ptr<spdlog::logger> Log::m_clientLogger;
 

@@ -32,11 +32,11 @@ list(APPEND VZ_HEADERS
     src/vz/event/KeyEvent.h
     src/vz/EntryPoint.h
     src/vz/Log.h
-    src/vz/vz.h
+    src/vz/Vz.h
     src/vz/Core.h
     src/vz/Application.h
     src/vz/Window.h
-)
+    )
 
 # Is using precompiled headers or use it as "header"
 if (USE_PRECOMPILED_HEADER)
@@ -46,18 +46,23 @@ else()
 endif()
 
 # File Sources
-list(APPEND VZ_SOURCES
+set(VZ_SOURCES
     src/vz/Application.cpp
     src/vz/Log.cpp
-    thirdparty/glad/glad.c
-)
+    
+    "src/vz/Window.cpp"
+    "src/vz/LayerManager.cpp"
+    "src/vz/Layer.cpp" 
+    "src/vz/layer/ImGuiLayer.cpp")
 
 # Set as library
 add_library(VZ-Engine
     ${VZ_LIBRARY_BUILD}
     ${VZ_HEADERS}
     ${VZ_SOURCES}
-    "src/vz/Window.cpp")
+    "src/vz/Layer.h"
+    "src/vz/LayerManager.h" 
+    "src/vz/layer/ImGuiLayer.h")
 
 # Set properties for the library
 set_target_properties(VZ-Engine
@@ -71,11 +76,7 @@ target_include_directories(
     PUBLIC
     "${CMAKE_CURRENT_SOURCE_DIR}/src"
     PUBLIC
-    "${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/spdlog/include"
-    PUBLIC
     "${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/GLFW3/include"
-    PUBLIC
-    "${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/glad/include"
     )
 
 # =============================================== DEFINE ===============================================
@@ -128,9 +129,17 @@ target_compile_definitions(VZ-Engine
 
 configure_file(src/config.h.in config.h)
 
-target_link_libraries(VZ-Engine INTERFACE glfw) # Set any executable or library that consume VZ-Engine to consume glfw library
-
 add_subdirectory(thirdparty/GLFW3)
+add_subdirectory(thirdparty/ImGui)
+add_subdirectory(thirdparty/spdlog)
+add_subdirectory(thirdparty/glad)
+
+target_link_libraries(VZ-Engine 
+    INTERFACE glfw # Set any executable or library that consume VZ-Engine to consume glfw library
+    PUBLIC ImGui   # VZ-Engine and executable or library that consume VZ-Engine will consume ImGui libary
+    PUBLIC spdlog
+    PUBLIC glad
+)
 
 # Build sandbox as sample of the engine
 if (VZ_SAMPLE)
@@ -140,15 +149,7 @@ endif()
 # =============================================== INSTALL ===============================================
 install(TARGETS VZ-Engine DESTINATION lib)
 install(FILES
-    src/vz/event/MouseEvent.h
-    src/vz/event/Event.h
-    src/vz/event/ApplicationEvent.h
-    src/vz/event/KeyEvent.h
-    src/vz/EntryPoint.h
-    src/vz/Log.h
-    src/vz/vz.h
-    src/vz/Core.h
-    src/vz/Application.h
+    ${VZ_HEADERS}
     DESTINATION include
     )
 

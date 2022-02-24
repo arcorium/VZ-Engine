@@ -7,9 +7,13 @@
 	#define _GLFW_WIN32
 #elif defined VZ_PLATFORM_UNIX
 	#define _GLFW_X11
+#elif defined VZ_PLATFORM_UNIX_WAYLAND
+#	define _GLFW_WAYLAND
 #endif
 
-#include <GLFW/glfw3.h>
+
+
+struct GLFWwindow;
 
 namespace vz
 {
@@ -40,14 +44,16 @@ namespace vz
 
 		virtual void OnUpdate() = 0;
 
-		virtual unsigned int GetWidth() const = 0;
+		virtual int GetWidth() const = 0;
 
-		virtual unsigned int GetHeight() const = 0;
+		virtual int GetHeight() const = 0;
 
 		// Window Attribute
 		virtual void SetEventCallback(const EventCallbackFn& callback) = 0;
 		virtual void SetVSync(bool val) = 0;
 		virtual bool IsVSync() const = 0;
+
+		virtual GLFWwindow* Get() const = 0;
 
 		static Window* Create(const WindowProp& props = WindowProp());
 	};
@@ -62,8 +68,8 @@ namespace vz
 
 		void OnUpdate() override;
 
-		unsigned GetWidth() const override { return m_data.Width; }
-		unsigned GetHeight() const override { return m_data.Height; }
+		int GetWidth() const override { return m_data.Width; }
+		int GetHeight() const override { return m_data.Height; }
 
 		void SetEventCallback(const EventCallbackFn& callback) override { m_data.Callback = callback; }
 		void SetVSync(bool val) override;
@@ -71,8 +77,16 @@ namespace vz
 
 		static Window* Create(const WindowProp& props = WindowProp());
 
+		GLFWwindow* Get() const override	{ return m_window; }
+		GLFWwindow* operator()() const
+		{
+			return m_window;
+		}
+
+		void Show() const;
 	private:
 		virtual void Init(const WindowProp& prop);
+		virtual void InitCallback();
 		virtual void Quit();
 
 	private:

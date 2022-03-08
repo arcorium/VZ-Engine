@@ -2,10 +2,10 @@
 #include "vz/Core.h"
 #include "vz/Layer.h"
 #include "vz/Window.h"
-#include "vz/event/MouseEvent.h"
-#include "vz/event/KeyEvent.h"
-#include "vz/event/ApplicationEvent.h"
 
+/**
+ * \brief Implementation of layer for ImGui
+ */
 namespace vz
 {
 	class VZ_API ImGuiLayer : public Layer
@@ -15,26 +15,22 @@ namespace vz
 		~ImGuiLayer() override;
 		void OnAttach() override;
 		void OnDetach() override;
-		void OnUpdate() override;
+		void OnDraw() override;
+		void ImGuiDraw() override;
+
 		/**
-		 * \brief Will be called every frame when it is on LayerManager instance
-		 * \param ev event
+		 * \brief Set new frame of ImGui layer
 		 */
-		void OnEvent(Event& ev) override;
+		void Begin();
+
+		/**
+		 * \brief Rendering the 'draw data'
+		 */
+		void End();
 
 	private:
 		void Clean();
 		void Init();
-
-		bool OnMouseMove(MouseMoveEvent& ev);
-		bool OnMouseScroll(MouseScrollEvent& ev);
-		bool OnMouseButtonPress(MouseButtonPressEvent& ev);
-		bool OnMouseButtonRelease(MouseButtonReleaseEvent& ev);
-		bool OnKeyPress(KeyPressEvent& ev);
-		bool OnKeyRelease(KeyReleaseEvent& ev);
-		bool OnKeyType(KeyTypeEvent& ev);
-		bool OnWindowResize(WindowResizeEvent& ev);
-		bool OnWindowClose(WindowCloseEvent& ev);
 
 
 	private:

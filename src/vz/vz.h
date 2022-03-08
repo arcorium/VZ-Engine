@@ -11,10 +11,11 @@
 	///	ENTRY POINT
 
 #else
-	#include "vz/Core.h"
 #include "vz/Application.h"
 	#include "vz/Log.h"
 #include "vz/Layer.h"
+#include "vz/Core.h"
+#include "vz/Input.h"
 
 	/// ENTRY POINT
 	#include "vz/EntryPoint.h"

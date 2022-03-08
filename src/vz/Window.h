@@ -11,13 +11,11 @@
 #	define _GLFW_WAYLAND
 #endif
 
-
-
-struct GLFWwindow;
-
 namespace vz
 {
-	// Window Property
+	/**
+	 * \brief Window properties
+	 */
 	struct WindowProp
 	{
 		std::string Title;
@@ -34,18 +32,38 @@ namespace vz
 
 	};
 
-	// Window Interface for desktop environment
+	/**
+	 * \brief Window interface for every desktop environment
+	 */
 	class VZ_API Window
 	{
 	public:
 		using EventCallbackFn = std::function<void(Event&)>;
+		/**
+		 * \brief Default constructor
+		 */
+		Window() = default;
 
+		/**
+		 * \brief Virtual destructor
+		 */
 		virtual ~Window() {}
 
+		/**
+		 * \brief Called every last frames for update
+		 */
 		virtual void OnUpdate() = 0;
 
+		/**
+		 * \brief Get window width
+		 * \return window width
+		 */
 		virtual int GetWidth() const = 0;
 
+		/**
+		 * \brief Get window height
+		 * \return window height
+		 */
 		virtual int GetHeight() const = 0;
 
 		// Window Attribute
@@ -53,52 +71,10 @@ namespace vz
 		virtual void SetVSync(bool val) = 0;
 		virtual bool IsVSync() const = 0;
 
-		virtual GLFWwindow* Get() const = 0;
+		virtual void* Get() const = 0;
 
 		static Window* Create(const WindowProp& props = WindowProp());
 	};
 
 	// Implement of window, because the platform "native" specific windows is not built yet
-	class VZ_API WindowImpl : public Window
-	{
-	public:
-		WindowImpl(const WindowProp& prop);
-
-		virtual ~WindowImpl();
-
-		void OnUpdate() override;
-
-		int GetWidth() const override { return m_data.Width; }
-		int GetHeight() const override { return m_data.Height; }
-
-		void SetEventCallback(const EventCallbackFn& callback) override { m_data.Callback = callback; }
-		void SetVSync(bool val) override;
-		bool IsVSync() const override;
-
-		static Window* Create(const WindowProp& props = WindowProp());
-
-		GLFWwindow* Get() const override	{ return m_window; }
-		GLFWwindow* operator()() const
-		{
-			return m_window;
-		}
-
-		void Show() const;
-	private:
-		virtual void Init(const WindowProp& prop);
-		virtual void InitCallback();
-		virtual void Quit();
-
-	private:
-		GLFWwindow* m_window;
-
-		struct WindowData
-		{
-			std::string Title;
-			unsigned int Width, Height;
-			bool VSync;
-
-			EventCallbackFn Callback;
-		} m_data;
-	};
 }

@@ -62,4 +62,4 @@ target_include_directories(ImGui
 	)
 
 set_target_properties(ImGui 
-	PROPERTIES VERSION 1.85)
+	PROPERTIES VERSION "1.88 WIP")

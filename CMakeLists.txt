@@ -50,19 +50,26 @@ set(VZ_SOURCES
     src/vz/Application.cpp
     src/vz/Log.cpp
     
-    "src/vz/Window.cpp"
-    "src/vz/LayerManager.cpp"
-    "src/vz/Layer.cpp" 
-    "src/vz/layer/ImGuiLayer.cpp")
+    src/vz/Window.cpp
+    src/vz/LayerManager.cpp
+    src/vz/Layer.cpp 
+    src/vz/layer/ImGuiLayer.cpp
+    src/vz/platform/Windows/WindowsWindow.cpp
+    src/vz/platform/Windows/WindowsInput.cpp
+  "src/vz/renderer/OpenGLContext.cpp")
 
 # Set as library
 add_library(VZ-Engine
     ${VZ_LIBRARY_BUILD}
     ${VZ_HEADERS}
     ${VZ_SOURCES}
-    "src/vz/Layer.h"
-    "src/vz/LayerManager.h" 
-    "src/vz/layer/ImGuiLayer.h")
+    src/vz/Layer.h
+    src/vz/LayerManager.h 
+    src/vz/layer/ImGuiLayer.h
+    src/vz/Input.h
+    src/vz/platform/Windows/WindowsWindow.h
+    src/vz/platform/Windows/WindowsInput.h
+ "src/vz/renderer/Context.h" "src/vz/renderer/OpenGLContext.h")
 
 # Set properties for the library
 set_target_properties(VZ-Engine
@@ -77,6 +84,8 @@ target_include_directories(
     "${CMAKE_CURRENT_SOURCE_DIR}/src"
     PUBLIC
     "${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/GLFW3/include"
+    PUBLIC
+    "${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/glm/include"
     )
 
 # =============================================== DEFINE ===============================================
@@ -133,12 +142,16 @@ add_subdirectory(thirdparty/GLFW3)
 add_subdirectory(thirdparty/ImGui)
 add_subdirectory(thirdparty/spdlog)
 add_subdirectory(thirdparty/glad)
+#add_subdirectory(thirdparty/glm/glm)
+
+#add_library(glm::glm ALIAS glm)
 
 target_link_libraries(VZ-Engine 
     INTERFACE glfw # Set any executable or library that consume VZ-Engine to consume glfw library
     PUBLIC ImGui   # VZ-Engine and executable or library that consume VZ-Engine will consume ImGui libary
     PUBLIC spdlog
     PUBLIC glad
+#    PUBLIC glm_static
 )
 
 # Build sandbox as sample of the engine

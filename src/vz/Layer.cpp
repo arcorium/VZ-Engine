@@ -4,13 +4,11 @@
 namespace vz
 {
 	Layer::Layer(const std::string& name)
-		: m_name(name), m_id(m_totalLayer)
+		: m_name(name), m_id(m_totalLayer++)
 	{
-		++m_totalLayer;
 	}
 	Layer::~Layer()
-	{
-	}
+	= default;
 
 	void Layer::OnAttach()
 	{
@@ -22,12 +20,21 @@ namespace vz
 
 	void Layer::OnUpdate()
 	{
-		VZ_CORE_INFO("Update");
+		//VZ_CORE_INFO("Update");
 	}
 
 	void Layer::OnEvent(Event& ev)
 	{
-		VZ_CORE_INFO("{}", ev.ToString());
+		//VZ_CORE_INFO("{}", ev.ToString());
+	}
+
+	void Layer::OnDraw()
+	{
+		//VZ_CORE_INFO("Drawing");
+	}
+
+	void Layer::ImGuiDraw()
+	{
 	}
 
 	const std::string& Layer::GetName() const

@@ -5,13 +5,25 @@
 
 namespace vz {
 
+	/**
+	 * \brief static class for logging
+	 */
 	class VZ_API Log
 	{
 	public:
 
 		static void Init();
 
+		/**
+		 * \brief Get core logger
+		 * \return pointer reference of core logger
+		 */
 		static std::shared_ptr<spdlog::logger>& GetCoreLogger() { return m_coreLogger; }
+
+		/**
+		 * \brief Get client logger
+		 * \return pointer reference of client logger
+		 */
 		static std::shared_ptr<spdlog::logger>& GetClientLogger() { return m_clientLogger; }
 
 	private:

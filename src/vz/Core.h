@@ -1,6 +1,11 @@
 #pragma once
+#include <string>
 
 #ifdef VZ_PLATFORM_WIN
+
+// Platform Windows defines
+#	define VZ_DO_PER_PLATFORM(windows, unix, ...)	windows(__VA_ARGS__)
+
 	// Building library as shared or static
 	#ifdef VZ_BUILD
 		#ifdef VZ_BUILD_SHARED
@@ -19,7 +24,8 @@
 	#endif
 
 #elif defined VZ_PLATFORM_UNIX
-	#define VZ_API
+#	define VZ_API
+#	define VZ_DO_PER_PLATFORM(windows, unix, ...)	unix(__VA_ARGS__)
 #else
 	#error set define to VZ_PLATFORM_[WIN|UNIX]
 #endif
@@ -52,12 +58,25 @@
 #define INT(x)		static_cast<int>(x)
 #define FLOAT(x)	static_cast<float>(x)
 #define DOUBLE(x)	static_cast<double>(x)
-//#define UINT(x)		static_cast<unsigned>(x)
+#define UNSIGNED(x)		static_cast<unsigned>(x)
+#define CAST(type, x)	static_cast<type>(x)
 
-#define VZ_ARRAY_LENGTH(arr)	(sizeof(arr) / sizeof(arr[0]))	
-#define VZ_SAFE_DELETE(ptr)		if (ptr) delete ptr; ptr = nullptr
+#define VZ_ARRAY_LENGTH(arr)			(sizeof(arr) / sizeof(arr[0]))
+#define VZ_DELETE(ptr)					if (ptr) delete ptr; ptr = nullptr
+#define VZ_CUSTOM_DELETE(ptr, pred)		if (ptr) pred(ptr); ptr = nullptr
+
 
 // Because the parameter is auto the decltype will deduce the argument type
 #define VZ_BIND_EVENT_VOID(fn)		[this](auto&& args){ fn(std::forward<decltype(args)>(args));}
 // Like above but with explicit template (auto is 'implicit template, "MAYBE")
 #define VZ_BIND_EVENT_BOOL(fn)		[this]<typename T>(T&& args){ return fn(std::forward<T>(args));}
+
+
+template<typename _from, typename _to>
+inline static _to cast(const _from & val) { return static_cast<_to>(val); }
+
+inline static std::string filename()
+{
+	std::string temp(__FILE__);
+	return temp.substr(temp.find_last_of('\\') + 1);
+}

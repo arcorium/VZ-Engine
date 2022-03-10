@@ -1,21 +1,22 @@
-#include "vzpch.h"
 #include "Application.h"
+
 #include "imgui.h"
 #include "Input.h"
-#include "glad/glad.h"
+#include "vzpch.h"
 #include "GLFW/glfw3.h"
+#include "graphic/Renderer.h"
 #include "Layer/ImGuiLayer.h"
 
 
 namespace vz
 {
-	Application* Application::m_instance;
+	Application* Application::s_instance;
 
 
 	Application::Application()
-		: m_window(Window::Create()), m_imguiLayer(new ImGuiLayer{m_window})
+		: m_window(Window::Create()), m_imguiLayer(new ImGuiLayer{m_window}), m_shader("basic")
 	{
-		m_instance = this;
+		s_instance = this;
 
 		// Windows Settings
 		VZ_ASSERT((m_window != nullptr), "Window is Null");
@@ -28,40 +29,16 @@ namespace vz
 		// Better doing it on lambda (not normal lambda, but lambda for forwarding the bind function)
 		m_window->SetEventCallback(VZ_BIND_EVENT_VOID(OnEvent));
 
-
-		glCreateVertexArrays(1, &m_vao);
-		//glBindVertexArray(m_vao);
-
-		float vertices[] =
-		{
-			-0.8f, 0.8f, 0.0f,	// TL
-			0.8f, 0.8f, 0.0f,	// TR
-			0.8f, -0.8f, 0.0f,	// BR
-			-0.8f, -0.8f, 0.0,	// BL
-		};
-
-		unsigned short indices[] =
-		{
-			0, 1, 2,
-			2, 3, 0
-		};
-
-		glCreateBuffers(1, &m_vbo);
-		glNamedBufferData(m_vbo, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-		glCreateBuffers(1, &m_ibo);
-		glNamedBufferData(m_ibo, sizeof(indices), indices, GL_STATIC_DRAW);
-
-		glEnableVertexArrayAttrib(m_vao, 0);
-		glVertexArrayAttribBinding(m_vao, 0, 0);
-		glVertexArrayAttribFormat(m_vao, 0, 3, GL_FLOAT, GL_FALSE, 0);
-		glVertexArrayVertexBuffer(m_vao, 0, m_vbo, 0, sizeof(float) * 3);
-		glVertexArrayElementBuffer(m_vao, m_ibo);
+		// Set shader path
+		Shader::SetPath("../../../../", true);
 	}
 
 	Application::~Application()
 	{
 		VZ_DELETE(m_window);
+
+		if (Input::Get())
+			delete Input::Get();
 	}
 
 	void Application::Start()
@@ -70,19 +47,18 @@ namespace vz
 		while (m_running)
 		{
 
-			glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
-			glClear(GL_COLOR_BUFFER_BIT);
 			m_imguiLayer->Begin();
 
-			glBindVertexArray(m_vao);
-			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, nullptr);
-
 			// Loop all layers
-			for(auto& layer : m_layerManager)
+
+			for (auto& layer : m_layerManager)
 			{
 				// Update
 				layer->OnUpdate();
+			}
 
+			for(auto& layer : m_layerManager)
+			{
 				// Draw
 				layer->OnDraw();
 

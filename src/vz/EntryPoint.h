@@ -11,9 +11,6 @@ int main()
 	auto app = vz::CreateApp();
 	app->Start();
 
-	// Temporary
-	delete vz::Input::Get();
-
 	delete app;
 	return 0;
 }

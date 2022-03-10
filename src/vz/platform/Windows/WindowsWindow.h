@@ -1,7 +1,7 @@
 #pragma once
 #include "vz/Core.h"
 #include "vz/Window.h"
-#include "vz/renderer/OpenGLContext.h"
+#include "vz/graphic/OpenGL/OpenGLContext.h"
 
 struct GLFWwindow;
 

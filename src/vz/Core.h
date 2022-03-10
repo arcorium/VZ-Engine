@@ -59,7 +59,8 @@
 #define FLOAT(x)	static_cast<float>(x)
 #define DOUBLE(x)	static_cast<double>(x)
 #define UNSIGNED(x)		static_cast<unsigned>(x)
-#define CAST(type, x)	static_cast<type>(x)
+#define SCAST(type, x)	static_cast<type>(x)
+#define CVOID(x)		reinterpret_cast<const void*>(x)
 
 #define VZ_ARRAY_LENGTH(arr)			(sizeof(arr) / sizeof(arr[0]))
 #define VZ_DELETE(ptr)					if (ptr) delete ptr; ptr = nullptr
@@ -80,3 +81,5 @@ inline static std::string filename()
 	std::string temp(__FILE__);
 	return temp.substr(temp.find_last_of('\\') + 1);
 }
+
+#define VZ_SHORT_IF(cond, _true, _false) (cond) ? _true : _false

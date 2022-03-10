@@ -70,7 +70,7 @@ namespace vz
 		}
 
 		// Setup Platform/Renderer backends
-		ImGui_ImplGlfw_InitForOpenGL(CAST(GLFWwindow*, m_window->Get()), true);
+		ImGui_ImplGlfw_InitForOpenGL(SCAST(GLFWwindow*, m_window->Get()), true);
 		ImGui_ImplOpenGL3_Init("#version 460 core");
 	}
 

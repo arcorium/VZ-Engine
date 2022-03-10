@@ -56,7 +56,12 @@ set(VZ_SOURCES
     src/vz/layer/ImGuiLayer.cpp
     src/vz/platform/Windows/WindowsWindow.cpp
     src/vz/platform/Windows/WindowsInput.cpp
-  "src/vz/renderer/OpenGLContext.cpp")
+  "src/vz/graphic/OpenGL/OpenGLContext.cpp"
+  "src/vz/graphic/Shader.cpp"
+  "src/vz/graphic/Buffer.cpp"
+  "src/vz/graphic/OpenGL/OpenGLBuffer.cpp" 
+  "src/vz/graphic/Renderer.cpp"  "src/vz/graphic/OpenGL/OpenGLVertexArray.cpp" "src/vz/graphic/VertexArray.cpp"
+     "src/vz/graphic/OpenGL/OpenGLRendererAPI.cpp")
 
 # Set as library
 add_library(VZ-Engine
@@ -69,7 +74,13 @@ add_library(VZ-Engine
     src/vz/Input.h
     src/vz/platform/Windows/WindowsWindow.h
     src/vz/platform/Windows/WindowsInput.h
- "src/vz/renderer/Context.h" "src/vz/renderer/OpenGLContext.h")
+ "src/vz/graphic/Context.h" 
+ "src/vz/graphic/OpenGL/OpenGLContext.h" 
+ "src/vz/graphic/Shader.h" 
+ "src/vz/graphic/Buffer.h" 
+ "src/vz/graphic/OpenGL/OpenGLBuffer.h"
+ "src/vz/graphic/OpenGL/OpenGLShader.h"
+ "src/vz/graphic/Renderer.h" "src/vz/graphic/VertexArray.h" "src/vz/graphic/OpenGL/OpenGLVertexArray.h"  "src/vz/graphic/RendererAPI.h" "src/vz/graphic/OpenGL/OpenGLRendererAPI.h")
 
 # Set properties for the library
 set_target_properties(VZ-Engine
@@ -106,9 +117,11 @@ list(APPEND
 if (WIN32 AND MSVC)
     message(STATUS "Platform : Windows")
     list(APPEND VZ_DEFINES_PUBLIC VZ_PLATFORM_WIN)
+    # target_compile_options(VZ-Engine PUBLIC /fsanitize=address /Zi)
 elseif(UNIX)
     message(STATUS "Platform : Linux")
     list(APPEND VZ_DEFINES_PUBLIC VZ_PLATFORM_UNIX)
+    # target_compile_options(VZ-Engine PUBLIC -fsanitize=address)
 else()
     message(WARNING "Platform is unknown")
 endif()

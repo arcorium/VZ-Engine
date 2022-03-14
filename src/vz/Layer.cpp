@@ -18,7 +18,7 @@ namespace vz
 	{
 	}
 
-	void Layer::OnUpdate()
+	void Layer::OnUpdate(Time& time)
 	{
 		//VZ_CORE_INFO("Update");
 	}

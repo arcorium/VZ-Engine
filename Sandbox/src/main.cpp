@@ -51,9 +51,9 @@ public:
 		VZ_INFO("Detached");
 	}
 
-	void OnUpdate() override
+	void OnUpdate(vz::Time& time) override
 	{
-
+		VZ_INFO("Time : {} | Delta : {}", time, time(vz::Time::MS));
 	}
 
 	void OnDraw() override

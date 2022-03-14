@@ -28,6 +28,7 @@ namespace vz
 		/* m_window->SetEventCallback(std::bind(&OnEvent, this, std::placeholders::_1)); */
 		// Better doing it on lambda (not normal lambda, but lambda for forwarding the bind function)
 		m_window->SetEventCallback(VZ_BIND_EVENT_VOID(OnEvent));
+		m_window->SetVSync(true);
 
 		// Set shader path
 		Shader::SetPath("../../../../", true);
@@ -43,9 +44,12 @@ namespace vz
 
 	void Application::Start()
 	{
-
+		Time time;
 		while (m_running)
 		{
+
+			// Calculating delta time
+			time.CalculateDelta();
 
 			m_imguiLayer->Begin();
 
@@ -54,7 +58,7 @@ namespace vz
 			for (auto& layer : m_layerManager)
 			{
 				// Update
-				layer->OnUpdate();
+				layer->OnUpdate(time);
 			}
 
 			for(auto& layer : m_layerManager)
@@ -69,6 +73,7 @@ namespace vz
 			m_imguiLayer->End();
 
 			m_window->OnUpdate();	// Polling event and swap buffers
+
 		}
 	}
 

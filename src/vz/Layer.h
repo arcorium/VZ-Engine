@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Core.h"
+#include "util/Timestamp.h"
 #include <string>
 #include "event/Event.h"
 
@@ -34,7 +35,7 @@ namespace vz
 		/**
 		 * \brief Called every frame for updating when the layer is already attached or pushed into manager
 		 */
-		virtual void OnUpdate();
+		virtual void OnUpdate(Time& time);
 
 		/**
 		 * \brief Called every frame for drawing when the layer is already attached or pushed into manager

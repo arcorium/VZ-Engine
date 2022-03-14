@@ -3,6 +3,8 @@
 
 #include "OpenGL/OpenGLRendererAPI.h"
 
+#include <glm/gtc/type_ptr.hpp>
+
 
 namespace vz
 {
@@ -33,12 +35,20 @@ namespace vz
 
 	// Renderer
 
-	void Renderer::BeginScene()
+	namespace
 	{
+		bool isEnd = true;
+		const glm::mat4* viewProjectionMatrix;
+	}
+
+	void Renderer::BeginScene(OrthographicCamera& camera)
+	{
+		viewProjectionMatrix = &camera.GetViewProjection();
 	}
 
 	void Renderer::EndScene()
 	{
+		isEnd = true;
 	}
 
 	IRendererAPI::API Renderer::CurrentAPI()
@@ -46,8 +56,14 @@ namespace vz
 		return s_api;
 	}
 
-	void Renderer::Submit(const std::shared_ptr<IVertexArray>& vertexArray)
+	void Renderer::Submit(std::shared_ptr<Shader>& shader, const std::shared_ptr<IVertexArray>& vertexArray)
 	{
+		if (isEnd)
+		{
+			shader->SetUniform("u_viewProjection", *viewProjectionMatrix);
+			isEnd = false;
+		}
+
 		vertexArray->Bind();
 		RenderCommand::DrawIndexed(vertexArray);
 	}

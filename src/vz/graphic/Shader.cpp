@@ -39,7 +39,7 @@ namespace vz
         glUseProgram(0);
     }
 
-    int Shader::ProcessCache(const std::string& name)
+    bool Shader::FoundInCache(const std::string& name)
     {
         if (!m_cache.contains(name))
         {
@@ -63,7 +63,7 @@ namespace vz
             VZ_INFO("regiter uniform with name {} in {}", name, location);
         }
 
-        return m_cache[name];
+        return true;
     }
 
     void Shader::SetPath(const std::string& path, bool append)
@@ -224,74 +224,75 @@ namespace vz
 
     void Shader::SetUniform(const std::string& name, int val)
     {
-        if (const int location = ProcessCache(name) >= 0)
-            glProgramUniform1i(m_id, location, val);
+        if (FoundInCache(name))
+            glProgramUniform1i(m_id, m_cache[name], val);
     }
 
     void Shader::SetUniform(const std::string& name, bool value)
     {
-        if (const int location = ProcessCache(name) >= 0)
-            glProgramUniform1i(m_id, location, static_cast<int>(value));
+        if (FoundInCache(name))
+            glProgramUniform1i(m_id, m_cache[name], static_cast<int>(value));
     }
 
     void Shader::SetUniform(const std::string& name, unsigned value)
     {
-        if (const int location = ProcessCache(name) >= 0)
-            glProgramUniform1ui(m_id, location, value);
+        if (FoundInCache(name))
+            glProgramUniform1ui(m_id, m_cache[name], value);
     }
 
     void Shader::SetUniform(const std::string& name, float value)
     {
-        if (const int location = ProcessCache(name) >= 0)
-            glProgramUniform1f(m_id, location, value);
+        if (FoundInCache(name))
+            glProgramUniform1f(m_id, m_cache[name], value);
     }
 
     void Shader::SetUniform(const std::string& name, double value)
     {
-        if (const int location = ProcessCache(name) >= 0)
-            glProgramUniform1d(m_id, location, value);
+        if (FoundInCache(name))
+            glProgramUniform1d(m_id, m_cache[name], value);
     }
 
     void Shader::SetUniform(const std::string& name, glm::vec3 vec3)
     {
-        if (const int location = ProcessCache(name) >= 0)
-            glProgramUniform3fv(m_id, location, 1, glm::value_ptr(vec3));
+        if (FoundInCache(name))
+            glProgramUniform3fv(m_id, m_cache[name], 1, glm::value_ptr(vec3));
     }
 
     void Shader::SetUniform(const std::string& name, glm::vec2 vec2)
     {
-        if (const int location = ProcessCache(name) >= 0)
-            glProgramUniform2fv(m_id, location, 1, glm::value_ptr(vec2));
+        if (FoundInCache(name))
+            glProgramUniform2fv(m_id, m_cache[name], 1, glm::value_ptr(vec2));
     }
 
     void Shader::SetUniform(const std::string& name, float value1, float value2, float value3)
     {
-        if (const int location = ProcessCache(name) >= 0)
-            glProgramUniform3f(m_id, location, value1, value2, value3);
+        if (FoundInCache(name))
+            glProgramUniform3f(m_id, m_cache[name], value1, value2, value3);
     }
 
     void Shader::SetUniform(const std::string& name, double value1, double value2, double value3)
     {
-        if (const int location = ProcessCache(name) >= 0)
-            glProgramUniform3d(m_id, location, value1, value2, value3);
+        if (FoundInCache(name))
+            glProgramUniform3d(m_id, m_cache[name], value1, value2, value3);
     }
 
-    void Shader::SetUniform(const std::string& name, glm::mat4 mat4)
+    void Shader::SetUniform(const std::string& name, const glm::mat4& mat4)
     {
-        if (const int location = ProcessCache(name) >= 0)
-            glProgramUniform4fv(m_id, location, 1, glm::value_ptr(mat4));
+        if (FoundInCache(name))
+            glProgramUniformMatrix4fv(m_id, m_cache[name], 1, GL_FALSE, glm::value_ptr(mat4));
+
     }
 
     void Shader::SetUniform(const std::string& name, float value1, float value2, float value3, float value4)
     {
-        if (const int location = ProcessCache(name) >= 0)
-            glProgramUniform4f(m_id, location, value1, value2, value3, value4);
+        if (FoundInCache(name))
+            glProgramUniform4f(m_id, m_cache[name], value1, value2, value3, value4);
     }
 
     void Shader::SetUniform(const std::string& name, double value1, double value2, double value3, double value4)
     {
-        if (const int location = ProcessCache(name) >= 0)
-            glProgramUniform4d(m_id, location, value1, value2, value3, value4);
+        if (FoundInCache(name))
+            glProgramUniform4d(m_id, m_cache[name], value1, value2, value3, value4);
     }
 }
 

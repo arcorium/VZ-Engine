@@ -1,5 +1,7 @@
 #pragma once
 #include "RendererAPI.h"
+#include "Shader.h"
+#include "../Camera.h"
 
 namespace vz
 {
@@ -21,10 +23,10 @@ namespace vz
 	public:
 		static IRendererAPI::API CurrentAPI();
 
-		static void BeginScene();
+		static void BeginScene(OrthographicCamera& camera);
 		static void EndScene();
 
-		static void Submit(const std::shared_ptr<IVertexArray>& vertexArray);
+		static void Submit(std::shared_ptr<Shader>& shader, const std::shared_ptr<IVertexArray>& vertexArray);
 
 	private:
 		static IRendererAPI::API s_api;

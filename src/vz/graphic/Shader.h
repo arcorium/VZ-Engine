@@ -36,11 +36,11 @@ namespace vz
         void SetUniform(const std::string& name, glm::vec2 vec2);
         void SetUniform(const std::string& name, float value1, float value2, float value3);
         void SetUniform(const std::string& name, double value1, double value2, double value3);
-        void SetUniform(const std::string& name, glm::mat4 mat4);
+        void SetUniform(const std::string& name, const glm::mat4& mat4);
         void SetUniform(const std::string& name, float value1, float value2, float value3, float value4);
         void SetUniform(const std::string& name, double value1, double value2, double value3, double value4);
 
-        int ProcessCache(const std::string& name);
+        bool FoundInCache(const std::string& name);
 
         static void SetPath(const std::string& path, bool append = false);
 

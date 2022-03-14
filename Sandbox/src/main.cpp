@@ -3,12 +3,17 @@
 #include "imgui.h"
 #include "vz/graphic/Renderer.h"
 
+#include "vz/Camera.h"
+
+inline static float position = 0.0f;
+inline static float rotate = 0.0f;
+
 
 class LayerImpl : public vz::Layer
 {
 public:
 	LayerImpl()
-		: vz::Layer("Implementation"), m_shader("basic")
+	: vz::Layer("Implementation"), m_shader(std::make_shared<vz::Shader>("basic")), m_camera(-2.0f, 2.0f, -2.0f, 2.0f)
 	{
 
 		float vertices[] =
@@ -37,8 +42,9 @@ public:
 		m_vertexArray->AddVertexBuffer(m_vbo);
 		m_vertexArray->SetIndexBuffer(m_ibo);
 
-		m_shader.Load({ .Vertex = "assets/basic.vs", .Fragment = "assets/basic.fs" });
+		m_shader->Load({ .Vertex = "assets/basic.vs", .Fragment = "assets/basic.fs" });
 	}
+
 	~LayerImpl() override {}
 
 	void OnAttach() override
@@ -53,7 +59,29 @@ public:
 
 	void OnUpdate() override
 	{
+		if (vz::Input::IsKeyPressed(vz::Key::W))
+		{
+			const glm::vec3& currentPos = m_camera.GetPosition();
+			m_camera.SetPosition({ currentPos.x, currentPos.y + m_cameraSpeed, currentPos.z });
+		}
 
+		if (vz::Input::IsKeyPressed(vz::Key::S))
+		{
+			const glm::vec3& currentPos = m_camera.GetPosition();
+			m_camera.SetPosition({ currentPos.x, currentPos.y - m_cameraSpeed, currentPos.z });
+		}
+
+		if (vz::Input::IsKeyPressed(vz::Key::A))
+		{
+			const glm::vec3& currentPos = m_camera.GetPosition();
+			m_camera.SetPosition({ currentPos.x - m_cameraSpeed, currentPos.y, currentPos.z });
+		}
+
+		if (vz::Input::IsKeyPressed(vz::Key::D))
+		{
+			const glm::vec3& currentPos = m_camera.GetPosition();
+			m_camera.SetPosition({ currentPos.x + m_cameraSpeed, currentPos.y, currentPos.z });
+		}
 	}
 
 	void OnDraw() override
@@ -61,10 +89,10 @@ public:
 		vz::RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1.0f });
 		vz::RenderCommand::Clear(vz::ClearFlag::COLOR | vz::ClearFlag::DEPTH);
 
-		vz::Renderer::BeginScene();
+		vz::Renderer::BeginScene(m_camera);
 		{
-			m_shader.Bind();
-			vz::Renderer::Submit(m_vertexArray);
+			m_shader->Bind();
+			vz::Renderer::Submit(m_shader, m_vertexArray);
 		}
 		vz::Renderer::EndScene();
 	}
@@ -91,18 +119,17 @@ public:
 
 	bool OnKeyPress(vz::KeyPressEvent& ev)
 	{
-		if (vz::Input::IsKeyPressed(vz::Key::A))
-		{
-			VZ_INFO("A is Pressed");
-			return true;	// Handled
-		}
 
-		return false;	// The event KeyPress will stop here
+
+		return false;	// Forward into keypress event on next layer
 	}
 
 private:
 	std::shared_ptr<vz::IVertexArray> m_vertexArray;
-	vz::Shader m_shader;
+	std::shared_ptr<vz::Shader> m_shader;
+	vz::OrthographicCamera m_camera;
+
+	float m_cameraSpeed = 0.5f;
 };
 
 class App : public vz::Application

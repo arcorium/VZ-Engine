@@ -5,6 +5,8 @@
 
 #include <glm/gtc/type_ptr.hpp>
 
+#include "OpenGL/OpenGLShader.h"
+
 
 namespace vz
 {
@@ -56,11 +58,17 @@ namespace vz
 		return s_api;
 	}
 
-	void Renderer::Submit(std::shared_ptr<Shader>& shader, const std::shared_ptr<IVertexArray>& vertexArray)
+	void Renderer::Submit(std::shared_ptr<IShader>& shader, const std::shared_ptr<IVertexArray>& vertexArray, const glm::mat4& transform)
 	{
+		shader->CastTo<OpenGLShader>()->SetUniform("u_model", transform);
+		//shader->CastTo<OpenGLShader>();
+		//static_cast<OpenGLShader*>(shader.get())->SetUniform("u_model", transform);
+
 		if (isEnd)
 		{
-			shader->SetUniform("u_viewProjection", *viewProjectionMatrix);
+			shader->CastTo<OpenGLShader>()->SetUniform("u_viewProjection", *viewProjectionMatrix);
+		    //static_cast<OpenGLShader*>(shader.get())->SetUniform("u_viewProjection", *viewProjectionMatrix);
+
 			isEnd = false;
 		}
 

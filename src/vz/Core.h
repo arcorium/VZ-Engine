@@ -83,3 +83,10 @@ inline static std::string filename()
 }
 
 #define VZ_SHORT_IF(cond, _true, _false) (cond) ? _true : _false
+
+// Concept
+namespace vz
+{
+	template <typename Derived, typename Base>
+	concept derived = std::is_base_of_v<Base, Derived>;
+}

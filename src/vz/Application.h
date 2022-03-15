@@ -5,7 +5,6 @@
 #include "Window.h"
 #include "event/ApplicationEvent.h"
 #include "event/KeyEvent.h"
-#include "graphic/Buffer.h"
 #include "graphic/Shader.h"
 #include "graphic/VertexArray.h"
 
@@ -89,7 +88,7 @@ namespace vz
 
 		// Graphics stuffs
 		std::shared_ptr<IVertexArray> m_vertexArray;
-		Shader m_shader;
+		IShader* m_shader;
 	};
 
 	extern Application* CreateApp(); // The declaration is somewhere (client) not here (server)

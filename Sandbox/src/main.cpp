@@ -1,6 +1,7 @@
 #include "vz/vz.h"
 #include "vz/event/MouseEvent.h"
 #include "imgui.h"
+#include "glm/ext/matrix_transform.hpp"
 #include "vz/graphic/Renderer.h"
 
 #include "vz/Camera.h"
@@ -19,7 +20,7 @@ class LayerImpl : public vz::Layer
 {
 public:
 	LayerImpl()
-	: vz::Layer("Implementation"), m_shader(std::make_shared<vz::Shader>("basic")), m_camera(-2.0f, 2.0f, -2.0f, 2.0f)
+	: vz::Layer("Implementation"), m_shader(vz::IShader::CreateShared("basic")), m_camera(-2.0f, 2.0f, -2.0f, 2.0f)
 	{
 
 		float vertices[] =
@@ -90,6 +91,7 @@ public:
 		}
 
 		m_camera.SetPosition(m_position);
+		//m_camera.SetRotation(rotate);
 
 	}
 
@@ -101,9 +103,10 @@ public:
 		vz::Renderer::BeginScene(m_camera);
 		{
 			m_shader->Bind();
-			vz::Renderer::Submit(m_shader, m_vertexArray);
+			vz::Renderer::Submit(m_shader, m_vertexArray, glm::scale(glm::mat4{1.0f}, glm::vec3{0.5f}));
 		}
 		vz::Renderer::EndScene();
+
 	}
 
 	void ImGuiDraw() override
@@ -135,7 +138,7 @@ public:
 
 private:
 	std::shared_ptr<vz::IVertexArray> m_vertexArray;
-	std::shared_ptr<vz::Shader> m_shader;
+	std::shared_ptr<vz::IShader> m_shader;
 	vz::OrthographicCamera m_camera;
 
 	glm::vec3 m_position{0.0f};

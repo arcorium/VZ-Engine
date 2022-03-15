@@ -14,7 +14,7 @@ namespace vz
 
 
 	Application::Application()
-		: m_window(Window::Create()), m_imguiLayer(new ImGuiLayer{m_window}), m_shader("basic")
+		: m_window(Window::Create()), m_imguiLayer(new ImGuiLayer{m_window}), m_shader(vz::IShader::Create("basic"))
 	{
 		s_instance = this;
 
@@ -31,7 +31,7 @@ namespace vz
 		m_window->SetVSync(true);
 
 		// Set shader path
-		Shader::SetPath("../../../../", true);
+		IShader::SetPath("../../../../", true);
 	}
 
 	Application::~Application()

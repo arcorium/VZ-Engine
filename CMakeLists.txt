@@ -57,11 +57,11 @@ set(VZ_SOURCES
     src/vz/platform/Windows/WindowsWindow.cpp
     src/vz/platform/Windows/WindowsInput.cpp
   "src/vz/graphic/OpenGL/OpenGLContext.cpp"
-  "src/vz/graphic/Shader.cpp"
+  
   "src/vz/graphic/Buffer.cpp"
   "src/vz/graphic/OpenGL/OpenGLBuffer.cpp" 
   "src/vz/graphic/Renderer.cpp"  "src/vz/graphic/OpenGL/OpenGLVertexArray.cpp" "src/vz/graphic/VertexArray.cpp"
-     "src/vz/graphic/OpenGL/OpenGLRendererAPI.cpp" "src/vz/Camera.cpp")
+     "src/vz/graphic/OpenGL/OpenGLRendererAPI.cpp" "src/vz/Camera.cpp" "src/vz/graphic/OpenGL/OpenGLShader.cpp" "src/vz/graphic/Shader.cpp")
 
 # Set as library
 add_library(VZ-Engine

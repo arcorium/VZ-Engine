@@ -80,7 +80,13 @@ add_library(VZ-Engine
  "src/vz/graphic/Buffer.h" 
  "src/vz/graphic/OpenGL/OpenGLBuffer.h"
  "src/vz/graphic/OpenGL/OpenGLShader.h"
- "src/vz/graphic/Renderer.h" "src/vz/graphic/VertexArray.h" "src/vz/graphic/OpenGL/OpenGLVertexArray.h"  "src/vz/graphic/RendererAPI.h" "src/vz/graphic/OpenGL/OpenGLRendererAPI.h" "src/vz/Camera.h")
+ "src/vz/graphic/Renderer.h" 
+ "src/vz/graphic/VertexArray.h" 
+ "src/vz/graphic/OpenGL/OpenGLVertexArray.h"  
+ "src/vz/graphic/RendererAPI.h" 
+ "src/vz/graphic/OpenGL/OpenGLRendererAPI.h" 
+ "src/vz/Camera.h"
+  "src/vz/util/Timestamp.h")
 
 # Set properties for the library
 set_target_properties(VZ-Engine

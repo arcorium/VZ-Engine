@@ -5,6 +5,12 @@
 
 #include "vz/Camera.h"
 
+namespace vz
+{
+	class Layer;
+	class Time;
+}
+
 inline static float position = 0.0f;
 inline static float rotate = 0.0f;
 
@@ -57,31 +63,34 @@ public:
 		VZ_INFO("Detached");
 	}
 
-	void OnUpdate() override
+	void OnUpdate(vz::Time& time) override
 	{
 		if (vz::Input::IsKeyPressed(vz::Key::W))
 		{
 			const glm::vec3& currentPos = m_camera.GetPosition();
-			m_camera.SetPosition({ currentPos.x, currentPos.y + m_cameraSpeed, currentPos.z });
+			m_position.y += time(m_cameraSpeed);
 		}
 
 		if (vz::Input::IsKeyPressed(vz::Key::S))
 		{
 			const glm::vec3& currentPos = m_camera.GetPosition();
-			m_camera.SetPosition({ currentPos.x, currentPos.y - m_cameraSpeed, currentPos.z });
+			m_position.y -= time(m_cameraSpeed);
 		}
 
 		if (vz::Input::IsKeyPressed(vz::Key::A))
 		{
 			const glm::vec3& currentPos = m_camera.GetPosition();
-			m_camera.SetPosition({ currentPos.x - m_cameraSpeed, currentPos.y, currentPos.z });
+			m_position.x -= time(m_cameraSpeed);
 		}
 
 		if (vz::Input::IsKeyPressed(vz::Key::D))
 		{
 			const glm::vec3& currentPos = m_camera.GetPosition();
-			m_camera.SetPosition({ currentPos.x + m_cameraSpeed, currentPos.y, currentPos.z });
+			m_position.x += time(m_cameraSpeed);
 		}
+
+		m_camera.SetPosition(m_position);
+
 	}
 
 	void OnDraw() override
@@ -129,7 +138,8 @@ private:
 	std::shared_ptr<vz::Shader> m_shader;
 	vz::OrthographicCamera m_camera;
 
-	float m_cameraSpeed = 0.5f;
+	glm::vec3 m_position{0.0f};
+	float m_cameraSpeed = 3.0f;
 };
 
 class App : public vz::Application
